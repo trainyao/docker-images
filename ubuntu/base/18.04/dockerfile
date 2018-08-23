@@ -1,0 +1,8 @@
+FROM ubuntu:18.04
+
+RUN apt-update
+RUN apt-get install vim gcc gdb ping
+
+COPY ./.bash_profile ~/.bash_profile.custom
+RUN ls ~/.bash_profile || touch ~/.bash_profile
+RUN cat ~/.bash_profile.custom >> ~/.bash_profile
