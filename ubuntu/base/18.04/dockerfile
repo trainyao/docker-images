@@ -1,8 +1,12 @@
 FROM ubuntu:18.04
 
 RUN apt-get update
-RUN apt-get install vim -y
+RUN apt-get install vim git -y
+RUN apt-get install netstat-nat net-tools -y
 
-COPY ./.bash_profile ~/.bash_profile.custom
-RUN ls ~/.bash_profile || touch ~/.bash_profile
-RUN cat ~/.bash_profile.custom >> ~/.bash_profile
+COPY ./.bash_aliases /root/.bash_aliases
+
+COPY ./start.sh /root/start.sh
+RUN chsh -s /bin/bash root
+
+ENTRYPOINT /bin/bash /root/start.sh
