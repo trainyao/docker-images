@@ -1,0 +1,19 @@
+FROM registry.cn-hangzhou.aliyuncs.com/trainyao/ubuntu-base:18.04
+
+RUN apt-get install nginx php7.2 php7.2-fpm php7.2-common php7.2-json php7.2-gd php7.2-cli php7.2-mbstring php7.2-xml php7.2-opcache php7.2-mysql -y
+COPY ./www.conf /etc/php/7.2/fpm/pool.d/www.conf
+COPY ./php-fpm.conf /etc/nginx/conf.d/php-fpm.conf
+COPY ./start.sh /root/start.sh
+COPY ./index.php /data/www/index.php
+
+RUN chown -R www-data:www-data /data/www
+RUN mkdir -p /run/php
+RUN chown -R www-data:www-data /run/php
+
+# init log file
+RUN mkdir -p /var/log/app
+RUN touch /var/log/app/app.1.log
+RUN touch /var/log/app/app.2.log
+RUN chown -R www-data:www-data /var/log/app
+
+ENTRYPOINT bash /root/start.sh
